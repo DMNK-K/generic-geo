@@ -289,7 +289,7 @@ class V2
     /**Returns true if all the vectors passed in are parallel. Tolerance is used to determine how precisely the 2 vectors need to be paralell for it to be considered true.
      * A value of 0 means only exactly paralell vectors will be considered as such. Values in the range of 0.001 to 0.00001 are recommended. If there's no vectors for comparison returns true.
      */
-    static areParallel(...vectors, tolerance = 0.0001)
+    static areParallel(tolerance = 0.0001, ...vectors)
     {
         if (!vectors || vectors.length < 2){return true;}
         for(let i = 1; i < vectors.length; i++)
