@@ -1,0 +1,22 @@
+{
+  "name": "generic-geo",
+  "version": "1.0.0",
+  "description": "Classes for common geometric operations and constructs.",
+  "main": "V2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DMNK-K/generic-geo.git"
+  },
+  "author": "DMNK-K",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DMNK-K/generic-geo/issues"
+  },
+  "homepage": "https://github.com/DMNK-K/generic-geo#readme",
+  "devDependencies": {
+    "eslint": "^7.18.0"
+  }
+}

@@ -1,9 +1,6 @@
 /**Class for representing 2 dimensional vectors, useful both for points and for vectors representing translation/movement/direction.*/
 class V2
 {
-    x = null;
-    y = null;
-
     constructor(x, y)
     {
         this.x = x;
@@ -294,7 +291,7 @@ class V2
         if (!vectors || vectors.length < 2){return true;}
         for(let i = 1; i < vectors.length; i++)
         {
-            if (!vectors[i - 1].isParallel(vectors[i]))
+            if (!vectors[i - 1].isParallel(vectors[i], tolerance))
             {
                 return false;
             }
