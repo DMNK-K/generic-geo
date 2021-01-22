@@ -5,6 +5,22 @@ class V2
     {
         this.x = x;
         this.y = y;
+        this.dims = [x, y];
+    }
+
+    /**Returns true when this vector is equal to other. Tolerance is used for V2s with floating point values for dimensions.
+     * For vectors inteded for integers, keep the tolerance = 0, as it is by default. If vectors are floats, values between 0.001 and 0.00001 are recommended.
+     */
+    equal(other, tolerance = 0)
+    {
+        const absDiff = this.diff(other).abs();
+        return (absDiff.x <= tolerance && absDiff.y <= tolerance);
+    }
+
+    /**Returns a new V2 that is the result of making both dimensions of this vector absolute.*/
+    abs()
+    {
+        return new V2(Math.abs(this.x), Math.abs(this.y));
     }
 
     /**Adds v2 to this vector, returning a new instance of V2. */
@@ -30,6 +46,7 @@ class V2
         return new V2(this.x - v2.x, this.y - v2.y);
     }
 
+
     /**Returns a result of a - b. */
     static diff(a, b)
     {
@@ -51,31 +68,31 @@ class V2
 
     //shorthands
     /**Shorthand for writing new V2(0, 0) */
-    static zero() {return new V2(0, 0);}
+    static get zero() {return new V2(0, 0);}
     /**Shorthand for writing new V2(0, 0) */
-    static one() {return new V2(1, 1);}
+    static get one() {return new V2(1, 1);}
     /**A vector pointing up. Shorthand for writing new V2(1, 1) */
-    static u() {return new V2(0, 1);}
+    static get u() {return new V2(0, 1);}
     /**A vector pointing down. Shorthand for writing new V2(0, 1) */
-    static d() {return new V2(0, -1);}
+    static get d() {return new V2(0, -1);}
     /**A vector pointing left. Shorthand for writing new V2(-1, 0) */
-    static l() {return new V2(-1, 0);}
+    static get l() {return new V2(-1, 0);}
     /**A vector pointing right. Shorthand for writing new V2(1, 0) */
-    static r() {return new V2(1, 0);}
+    static get r() {return new V2(1, 0);}
 
     //clockwise array of basic directions
-    static baseDirs() {return [V2.u(), V2.r(), V2.d(), V2.l()];}
-    static diagDirs() {return [new V2(1, 1), new V2(1, -1), new V2(-1, -1), new V2(-1, 1)];}
-    static eightDirs()
+    static get adjDirs() {return [V2.u, V2.r, V2.d, V2.l];}
+    static get diagDirs() {return [new V2(1, 1), new V2(1, -1), new V2(-1, -1), new V2(-1, 1)];}
+    static get baseDirs()
     {
         return[
-            V2.u(),
+            V2.u,
             new V2(1, 1),
-            V2.r(),
+            V2.r,
             new V2(1, -1),
-            V2.d(),
+            V2.d,
             new V2(-1, -1),
-            V2.l(),
+            V2.l,
             new V2(-1, 1),
         ];
     }
@@ -117,7 +134,7 @@ class V2
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
-    /**Normalizes this vector, which means it makes it have magnitude = 1, preserving the direction. Returns V2.zero() when current magnitude is 0.*/
+    /**Returns normalized instance of this V2, which means it makes it have magnitude = 1, preserving the direction. Returns V2.zero() when current magnitude is 0.*/
     normalize()
     {
         const mag = this.magnitude();
@@ -303,6 +320,75 @@ class V2
     getPerpendicular()
     {
         return (this.x >= 0) ? new V2(-this.y, this.x) : new V2(this.y, -this.x);
+    }
+
+    /**Returns an array of integer points adjacent to this point. Adjacent means north, south, east, west.*/
+    getAdj()
+    {
+        const rounded = this.round();
+        return [rounded.add(V2.u), rounded.add(V2.r), rounded.add(V2.d), rounded.add(V2.l)];
+    }
+
+    /**Returns an array of integer points diagonal to this point.*/
+    getDiag()
+    {
+        const rounded = this.round();
+        return [rounded.add(new V2(1, 1)), rounded.add(new V2(1, -1)), rounded.add(new V2(-1, -1)), rounded.add(new V2(-1, 1))];
+    }
+
+    /**Returns an array of integer points adjacent and diagonal to this point. */
+    getSurrounding()
+    {
+        const rounded = this.round();
+        return [
+            rounded.add(V2.u),
+            rounded.add(new V2(1, 1)),
+            rounded.add(V2.r),
+            rounded.add(new V2(1, -1)),
+            rounded.add(V2.d),
+            rounded.add(new V2(-1, -1)),
+            rounded.add(V2.l),
+            rounded.add(new V2(-1, 1)),
+        ];
+    }
+
+    /**Returns true if this integer point is adjacent to to. Adjacent means north, south, east, west. */
+    isAdj(to)
+    {
+        for(let i = 0; i < V2.adjDirs.length; i++)
+        {
+            if (this.add(V2.adjDirs[i]).equal(to))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**Returns true if this integer point is diagonal to to.*/
+    isDiag(to)
+    {
+        for(let i = 0; i < V2.diagDirs.length; i++)
+        {
+            if (this.add(V2.diagDirs[i]).equal(to))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**Returns true if this integer point is diagonal or adjacent to to.*/
+    isSurr(to)
+    {
+        for(let i = 0; i < V2.baseDirs.length; i++)
+        {
+            if (this.add(V2.baseDirs[i]).equal(to))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**Returns a string representation of this vector that looks like this: [x; y] */
