@@ -253,6 +253,61 @@ class V2
         return a.add(dir.mult(frac));
     }
 
+    /**Returns an array of n points spaced equally between points a and b. Eg. if n = 3, points are 1/4 of the way, 1/2 of the way and 3/4 of the way.
+     * If includeEnds is true, the array also includes point a at [0], and point b at [last], in that case the length of the return array is n + 2.
+     */
+    static getPointsBetween(a, b, n, includeEnds)
+    {
+        const returnArray = [];
+        if (includeEnds) {returnArray.push(V2.cloneFrom(a));}
+        const fracBase = 1 / (1 + Math.abs(n));
+        let frac;
+        for(let i = 0; i < n; i++)
+        {
+            frac = fracBase * (i + 1);
+            returnArray.push(V2.getPointBetween(a, b, frac));
+        }
+        if (includeEnds) {returnArray.push(V2.cloneFrom(b));}
+        return returnArray;
+    }
+
+    /**Returns true if this vector is perpendicular to other (angled at 90 degrees). Tolerance is used to determine how precisely the 2 vectors need to be perpendicular for it to be considered true.
+     * A value of 0 means only exactly perpendicular vectors will be considered as such. Values in the range of 0.001 to 0.00001 are recommended.*/
+    isPerpendicular(other, tolerance = 0.0001)
+    {
+        return (Math.abs(V2.normDot(this, other)) <= tolerance);
+    }
+
+    /**Returns true if this vector is paralell to other. Tolerance is used to determine how precisely the 2 vectors need to be paralell for it to be considered true.
+     * A value of 0 means only exactly paralell vectors will be considered as such. Values in the range of 0.001 to 0.00001 are recommended.
+    */
+    isParallel(other, tolerance = 0.0001)
+    {
+        return (Math.abs(V2.normDot(this, other) - 1) <= tolerance) || (Math.abs(V2.normDot(this, other) + 1) <= tolerance);
+    }
+
+    /**Returns true if all the vectors passed in are parallel. Tolerance is used to determine how precisely the 2 vectors need to be paralell for it to be considered true.
+     * A value of 0 means only exactly paralell vectors will be considered as such. Values in the range of 0.001 to 0.00001 are recommended. If there's no vectors for comparison returns true.
+     */
+    static areParallel(...vectors, tolerance = 0.0001)
+    {
+        if (!vectors || vectors.length < 2){return true;}
+        for(let i = 1; i < vectors.length; i++)
+        {
+            if (!vectors[i - 1].isParallel(vectors[i]))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**Returns a new V2 perpendicular to this one. Y axis is always positive and the magnitude is preserved.*/ 
+    getPerpendicular()
+    {
+        return (this.x >= 0) ? new V2(-this.y, this.x) : new V2(this.y, -this.x);
+    }
+
     /**Returns a string representation of this vector that looks like this: [x; y] */
     toString()
     {
