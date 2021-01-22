@@ -234,7 +234,7 @@ class V2
             if (vectors[i].x > maxX) {maxX = vectors[i].x;}
             if (vectors[i].y > maxY) {maxY = vectors[i].y;}
         }
-        return new V2(minX, maxY);
+        return new V2(maxX, maxY);
     }
 
     /**Returns a new V2 representing the ranges between minimal and maximal values of x and of y occuring within passed vectors. Returns null if none passed.*/
@@ -242,7 +242,7 @@ class V2
     {
         if (!vectors || vectors.length <= 0){return null;}
         const min = V2.min(...vectors);
-        const max = V2.max(...vecotrs);
+        const max = V2.max(...vectors);
         return new V2(max.x - min.x, max.y - min.y);
     }
 
