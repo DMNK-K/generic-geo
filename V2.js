@@ -72,7 +72,7 @@ class V2
     /**Divides this vector by a number and returns a new V2. */
     divide(divider)
     {
-        if (divider == 0) {return new V2(NaN, NaN);}
+        if (divider === 0) {return new V2(NaN, NaN);}
         return new V2(this.x / divider, this.y / divider);
     }
 

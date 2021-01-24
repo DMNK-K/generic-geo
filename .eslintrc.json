@@ -10,6 +10,6 @@
         "sourceType": "module"
     },
     "rules": {
-        "no-prototype-builtins":"warn"
+        "no-prototype-builtins":"off"
     }
 }
