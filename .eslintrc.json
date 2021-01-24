@@ -10,5 +10,6 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-prototype-builtins":"warn"
     }
 }

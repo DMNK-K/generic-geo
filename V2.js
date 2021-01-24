@@ -6,6 +6,16 @@ class V2
         this.x = x;
         this.y = y;
         this.dims = [x, y];
+
+        //binding this for all methods that are non-static
+        for(let property in this)
+        {
+            if (this.hasOwnProperty(property) && typeof this[property] == "function")
+            {
+                this[property] = this[property].bind(this);
+            }
+        }
+
     }
 
     /**Returns true when this vector is equal to other. Tolerance is used for V2s with floating point values for dimensions.
